@@ -25,4 +25,12 @@ public class Propel : MonoBehaviour {
 			Destroy(this.gameObject);
 		}
 	}
+	
+	//Collision detection
+	void OnTriggerEnter(Collider collider) {
+		if(collider.gameObject.tag == "Enemy") {
+			Debug.Log ("Projectile Destroyed");
+			Destroy (this.gameObject);	
+		}
+	}
 }

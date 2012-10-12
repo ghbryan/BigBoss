@@ -21,4 +21,12 @@ public class Enemy : MonoBehaviour {
 				Destroy (this.gameObject);
 		}
 	}
+	
+	//Collision detection
+	void OnTriggerEnter(Collider collider) {
+		if(collider.gameObject.tag == "boss_projectile") {
+			Debug.Log ("Enemy Destroyed");
+			Destroy (this.gameObject);
+		}
+	}
 }
