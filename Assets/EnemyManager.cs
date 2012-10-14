@@ -25,10 +25,19 @@ public class EnemyManager : MonoBehaviour {
 		
 		if(spawnDelay <= 0) {
 			Vector3 spawnPos = spawners[Random.Range (0, spawners.Length)].transform.position;
-			GameObject nextEnemyType = enemyTypes[Random.Range (0, enemyTypes.Length)];
-			GameObject newEnemy = (GameObject)Instantiate (nextEnemyType, spawnPos, Quaternion.identity);
+			
+			if(enemyTypes.Length > 0)
+			{
+				GameObject nextEnemyType = enemyTypes[Random.Range (0, enemyTypes.Length)];
+				GameObject newEnemy = (GameObject)Instantiate (nextEnemyType, spawnPos, Quaternion.identity);
+				newEnemy.AddComponent<Enemy>();
+			}
+			else
+			{
+				Debug.LogWarning("EnemyManager:Update(): No enemyTypes found!");	
+			}
+			
 			spawnDelay = Random.Range (minTimer, maxTimer);
-			newEnemy.AddComponent<Enemy>();
 		}
 	}
 }

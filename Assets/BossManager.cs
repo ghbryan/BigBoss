@@ -1,29 +1,42 @@
 using UnityEngine;
 using System.Collections;
+using System;
 
 public class BossManager : MonoBehaviour {
 	
 	public GameObject boss;
-	public GameObject projectiles;
-	public float shootPower = 1.0f;
-	public float bulletLead = 0.25f;
 	public float rotRadiansPerSecond = Mathf.PI / 2;
 	
-	public float coolDown = 0.1f;
-	private float currCooldown = -1;
-	
 	private Vector3 currDirection = Vector3.forward;
+	public Vector3 CurrDirection
+	{
+		get { return currDirection; }
+	}
 	
 	private Vector3 desiredDirection = Vector3.forward;
 	
+	public string [] attacksNames;
+	private BossAttackBase [] attacks;
+	
 	// Use this for initialization
 	void Start () {
-		//Instantiate(boss, bossSpawnMarker.position, Quaternion.identity);
 		boss.transform.position = transform.position;
+		attacks = new BossAttackBase[attacksNames.Length];
+		for(int i = 0; i < attacks.Length; i++)
+		{
+			attacks[i] = gameObject.AddComponent(attacksNames[i]) as BossAttackBase;
+			Debug.Log(attacks[i]);
+		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		
+		for(int i = 0; i < attacks.Length; i++)
+		{
+			attacks[i].Update();
+		}
+		
 		doInput();
 	}
 	
@@ -33,19 +46,20 @@ public class BossManager : MonoBehaviour {
 		{
 			desiredDirection = direction.normalized;
 		}
-		
 		currDirection = Vector3.RotateTowards(currDirection, desiredDirection, rotRadiansPerSecond * Time.deltaTime, 0);
-
 		boss.transform.rotation = Quaternion.LookRotation(currDirection, Vector3.up);
-		currCooldown -= Time.deltaTime;
 		
-		if(Input.GetButton("Fire1") && currCooldown <= 0)
+		if(Input.GetButton("Fire1") && attacks.Length > 0)
 		{
-			currCooldown = coolDown;
-			GameObject newShot = (GameObject)(Instantiate (projectiles, boss.transform.position + (currDirection * bulletLead), boss.transform.rotation));
-			newShot.transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);
-			Propel propelScript = newShot.AddComponent<Propel>();
-			propelScript.velocity = currDirection * shootPower;
+			attacks[0].AttemptFire();
+		}
+		if(Input.GetButton("Fire2") && attacks.Length > 1)
+		{
+			attacks[1].AttemptFire();
+		}
+		if(Input.GetButton("Fire3") && attacks.Length > 2)
+		{
+			attacks[2].AttemptFire();
 		}
 	}
 }
