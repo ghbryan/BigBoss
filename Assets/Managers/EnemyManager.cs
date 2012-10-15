@@ -15,7 +15,7 @@ public class EnemyManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		spawners = GameObject.FindGameObjectsWithTag("EnemySpawner");
-		enemyTypes = GameObject.Find ("LevelManager").GetComponent<LevelManager>().enemyData;
+		enemyTypes = GameObject.Find ("LevelManager").GetComponent<LevelManager>().GetEnemies();
 		spawnDelay = minTimer;
 	}
 	
@@ -30,7 +30,6 @@ public class EnemyManager : MonoBehaviour {
 			{
 				GameObject nextEnemyType = enemyTypes[Random.Range (0, enemyTypes.Length)];
 				GameObject newEnemy = (GameObject)Instantiate (nextEnemyType, spawnPos, Quaternion.identity);
-				//newEnemy.AddComponent<Enemy>();
 			}
 			else
 			{

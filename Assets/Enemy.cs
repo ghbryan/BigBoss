@@ -37,7 +37,7 @@ public class Enemy : MonoBehaviour {
 	
 	void TakeDamage(float damage) {
 		currentHealth -= damage;
-		Debug.Log ("Enemy Hit For 25 HP");
+		Debug.Log ("Enemy Hit For " + damage + " HP");
 		
 		float percentRemaining = currentHealth / maxHealth;
 		GetComponent<EntityUI>().lifePercent = percentRemaining;
