@@ -34,6 +34,7 @@ public class EntityUI : MonoBehaviour {
 		barsize.y = Mathf.Max(1, barsize.y);
 		
 		Vector3 screenpos = Camera.mainCamera.WorldToScreenPoint(transform.position);
+		screenpos.y = Camera.mainCamera.GetScreenHeight() - screenpos.y;
 		
 		lifeBarBorderRect.x = screenpos.x - barsize.x / 2 + offset.x - borderThickness;
 		lifeBarBorderRect.y = screenpos.y + offset.y - borderThickness;
