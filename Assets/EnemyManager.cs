@@ -34,7 +34,7 @@ public class EnemyManager : MonoBehaviour {
 			}
 			else
 			{
-				Debug.LogWarning("EnemyManager:Update(): No enemyTypes found!");	
+				Debug.Log("EnemyManager:Update(): No enemyTypes found!");	
 			}
 			
 			spawnDelay = Random.Range (minTimer, maxTimer);
