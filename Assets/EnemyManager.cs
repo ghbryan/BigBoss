@@ -15,7 +15,8 @@ public class EnemyManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		spawners = GameObject.FindGameObjectsWithTag("EnemySpawner");
-		enemyTypes = Resources.FindObjectsOfTypeAll(typeof(GameObject)).Cast<GameObject>().Where(g=>g.tag=="Enemy").ToArray();
+		while(enemyTypes == null)
+			enemyTypes = Resources.FindObjectsOfTypeAll(typeof(GameObject)).Cast<GameObject>().Where(g=>g.tag=="Enemy").ToArray();
 		spawnDelay = minTimer;
 	}
 	
