@@ -15,8 +15,7 @@ public class EnemyManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		spawners = GameObject.FindGameObjectsWithTag("EnemySpawner");
-		while(enemyTypes == null)
-			enemyTypes = Resources.FindObjectsOfTypeAll(typeof(GameObject)).Cast<GameObject>().Where(g=>g.tag=="Enemy").ToArray();
+		enemyTypes = GameObject.Find ("LevelManager").GetComponent<LevelManager>().enemyData;
 		spawnDelay = minTimer;
 	}
 	
@@ -35,7 +34,7 @@ public class EnemyManager : MonoBehaviour {
 			}
 			else
 			{
-				Debug.Log("EnemyManager:Update(): No enemyTypes found!");	
+				Debug.Log("EnemyManager:Update(): No enemyTypes found!");;
 			}
 			
 			spawnDelay = Random.Range (minTimer, maxTimer);
