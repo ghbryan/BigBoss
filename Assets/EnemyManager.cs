@@ -30,7 +30,7 @@ public class EnemyManager : MonoBehaviour {
 			{
 				GameObject nextEnemyType = enemyTypes[Random.Range (0, enemyTypes.Length)];
 				GameObject newEnemy = (GameObject)Instantiate (nextEnemyType, spawnPos, Quaternion.identity);
-				newEnemy.AddComponent<Enemy>();
+				//newEnemy.AddComponent<Enemy>();
 			}
 			else
 			{
