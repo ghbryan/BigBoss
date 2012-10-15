@@ -10,9 +10,11 @@ Library/expandedItems
 Library/metadata
 Library/previews
 Library/guidmapper
+Library/InspectorExpandedItems.asset
 Temp
 *.pidb
 build
+BigBoss.userprefs
 
 # Unity
 [Ll]ibrary/
