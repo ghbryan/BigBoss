@@ -7,6 +7,8 @@ public class EnemyManager : MonoBehaviour {
 	private GameObject[] spawners;
 	private GameObject[] enemyTypes;
 	
+	private GameObject levelManager;
+	
 	public float minTimer = 2.0f;
 	public float maxTimer = 4.0f;
 	
@@ -14,8 +16,9 @@ public class EnemyManager : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
+		levelManager = GameObject.Find ("LevelManager");
 		spawners = GameObject.FindGameObjectsWithTag("EnemySpawner");
-		enemyTypes = GameObject.Find ("LevelManager").GetComponent<LevelManager>().GetEnemies();
+		enemyTypes = levelManager.GetComponent<LevelManager>().GetEnemies();
 		spawnDelay = minTimer;
 	}
 	
@@ -26,10 +29,14 @@ public class EnemyManager : MonoBehaviour {
 		if(spawnDelay <= 0) {
 			Vector3 spawnPos = spawners[Random.Range (0, spawners.Length)].transform.position;
 			
-			if(enemyTypes.Length > 0)
+			if(enemyTypes.Length > 0 && !levelManager.GetComponent<LevelManager>().ThreatLimitReached())
 			{
 				GameObject nextEnemyType = enemyTypes[Random.Range (0, enemyTypes.Length)];
-				GameObject newEnemy = (GameObject)Instantiate (nextEnemyType, spawnPos, Quaternion.identity);
+				
+				if((nextEnemyType.GetComponent<Enemy>().threatLevel + levelManager.GetComponent<LevelManager>().CurrentThreat()) <= levelManager.GetComponent<LevelManager>().maxThreat) {
+					GameObject newEnemy = (GameObject)Instantiate (nextEnemyType, spawnPos, Quaternion.identity);
+					levelManager.GetComponent<LevelManager>().UpdateThreat(newEnemy.GetComponent<Enemy>().threatLevel);
+				}
 			}
 			else
 			{
