@@ -13,10 +13,18 @@ public class BossManager : MonoBehaviour {
 		get { return currDirection; }
 	}
 	
+	private Vector3 cursorPos = Vector3.zero;
+	private GameObject cursorObj;
+	
+	private Vector3 cursorCurrPos = Vector3.zero;
+	private GameObject cursorCurrObj;
+	
 	private Vector3 desiredDirection = Vector3.forward;
 	
 	public string [] attacksNames;
 	private BossAttackBase [] attacks;
+	
+	public float cursorSensitivity = 0.25f;
 	
 	// Use this for initialization
 	void Start () {
@@ -27,6 +35,9 @@ public class BossManager : MonoBehaviour {
 			attacks[i] = gameObject.AddComponent(attacksNames[i]) as BossAttackBase;
 			Debug.Log(attacks[i]);
 		}
+		cursorObj = GameObject.Find("Cross");
+		cursorCurrObj = Instantiate(cursorObj) as GameObject;
+		cursorCurrObj.GetComponent<Light>().color = Color.red;
 	}
 	
 	// Update is called once per frame
@@ -41,11 +52,19 @@ public class BossManager : MonoBehaviour {
 	}
 	
 	void doInput(){
-		Vector3 direction = new Vector3(Input.GetAxis ("Horizontal"), 0, Input.GetAxis ("Vertical"));
-		if(direction.magnitude > 0.25) //Dead zone below 0.25
-		{
-			desiredDirection = direction.normalized;
-		}
+		Vector3 direction = new Vector3(Input.GetAxis ("Horizontal"), 0, Input.GetAxis ("Vertical")) * cursorSensitivity;
+		cursorPos += direction;
+		
+		cursorPos.x = Mathf.Clamp(cursorPos.x, -10, 10);
+		cursorPos.z = Mathf.Clamp(cursorPos.z, -10, 10);
+		
+		cursorCurrPos = boss.transform.position + (currDirection * Vector3.Distance(cursorPos, boss.transform.position));
+
+		cursorObj.transform.position = cursorPos + new Vector3(0,5,0);
+		cursorCurrObj.transform.position = cursorCurrPos + new Vector3(0,5,0);
+		
+		desiredDirection = cursorPos.normalized;
+		
 		currDirection = Vector3.RotateTowards(currDirection, desiredDirection, rotRadiansPerSecond * Time.deltaTime, 0);
 		boss.transform.rotation = Quaternion.LookRotation(currDirection, Vector3.up);
 		
