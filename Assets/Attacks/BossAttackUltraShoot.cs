@@ -3,7 +3,7 @@ using System.Collections;
 
 public class BossAttackUltraShoot: BossAttackBase{
 	
-	private const float shootCooldown = 3.0f;
+	private const float shootCooldown = 0.9f;
 	private const float buttetLead = 0.5f;
 	private const float shotPower = 2.0f;
 	private GameObject projectile;

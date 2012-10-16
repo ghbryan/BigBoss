@@ -3,7 +3,7 @@ using System.Collections;
 
 public class BossAttackNormalShoot: BossAttackBase{
 	
-	private const float shootCooldown = 1.0f;
+	private const float shootCooldown = 0.75f;
 	private const float buttetLead = 0.5f;
 	private const float shotPower = 2.0f;
 	private GameObject projectile;
