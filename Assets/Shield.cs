@@ -10,6 +10,13 @@ public class Shield : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if(!gameObject.GetComponent<Enemy>().IsMoving())
+		{
+			Deploy();
+		}
+	}
 	
+	void Deploy () {
+		//Code for deploying shield	
 	}
 }

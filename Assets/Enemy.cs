@@ -60,4 +60,8 @@ public class Enemy : MonoBehaviour {
 			GameObject.Find ("LevelManager").GetComponent<LevelManager>().UpdateThreat(-threatLevel);
 		}
 	}
+	
+	public bool IsMoving() {
+		return moving;	
+	}
 }
