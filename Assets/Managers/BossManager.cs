@@ -25,6 +25,9 @@ public class BossManager : MonoBehaviour {
 	private BossAttackBase [] attacks;
 	
 	public float cursorSensitivity = 0.25f;
+	private Vector3 cursorOffset = new Vector3(5, 0, 0);
+	
+	public Camera cam;
 	
 	// Use this for initialization
 	void Start () {
@@ -49,12 +52,38 @@ public class BossManager : MonoBehaviour {
 		}
 		
 		doInput();
+		
+		cam.transform.position = cursorPos + cursorOffset + new Vector3(0,5,0);
+		cam.transform.LookAt(cursorPos, Vector3.up);
 	}
 	
 	void doInput(){
-		Vector3 direction = new Vector3(Input.GetAxis ("Horizontal"), 0, Input.GetAxis ("Vertical")) * cursorSensitivity;
+		
+		//TODO: @MJP make this easier to read!
+		float rotDir = Input.GetAxis("HorizontalRight") * 2;
+		float distDir = -Input.GetAxis("VerticalRight") * 0.2f;
+		
+		float cleanStickLeftX = Input.GetAxis("Horizontal") * 0.2f;
+		float cleanStickLeftY = Input.GetAxis("Vertical") * 0.2f;
+		
+		float newCamLen = (cursorOffset.magnitude - distDir);
+		if(newCamLen < 5 || newCamLen > 6)
+			newCamLen = Mathf.Clamp(newCamLen, 5, 6);
+		cursorOffset = cursorOffset.normalized * newCamLen;
+		cursorOffset = Quaternion.AngleAxis(rotDir, Vector3.up) * cursorOffset;
+		
+		Vector3 xzForward = (-cursorOffset).normalized;
+		//Debug.DrawRay(cursorPos, cursorOffset);
+		//Debug.DrawRay(cursorPos, xzForward);
+		
+		Vector3 direction = (xzForward * cleanStickLeftY) + Vector3.Cross(Vector3.up, xzForward).normalized * cleanStickLeftX;
+		
+		//Debug.Log(direction.magnitude);
+		
 		cursorPos += direction;
 		
+		if(cursorPos.magnitude > 8)
+			cursorPos = cursorPos.normalized * 8;
 		cursorPos.x = Mathf.Clamp(cursorPos.x, -10, 10);
 		cursorPos.z = Mathf.Clamp(cursorPos.z, -10, 10);
 		
